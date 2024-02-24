@@ -1,0 +1,18 @@
+.main1
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px;
+    border: 1px solid #313131;
+    background-color: #1d1d1d;
+    color: #b2b2b2;
+    transition: all 0.3s ease;
+}
+
+.main1:hover
+{
+    background-color: #272727;
+    color: #f6f6f6;
+}
