@@ -34,8 +34,9 @@ const page = () => {
           {dashcards.map((dashcards, index) => (
             <Dashcard
               key={index}
+              name={dashcards.name}
               phone={dashcards.phoneNumber}
-              issue={dashcards.issue}
+              location={dashcards.location}
             />
           ))}
         </div>
