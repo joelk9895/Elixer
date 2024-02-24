@@ -4,9 +4,9 @@ const Dashcard = (props) => {
   return (
     <div className='main1'>
       
-              <div><p className="data">{props.name}</p></div>
               <div><p className="data">{props.phone}</p></div>
-              <div><p className="data">{props.location}</p></div>
+              <div><p className="data">{props.issue}</p></div>
+              {/* <div><p className="data">{props.location}</p></div> */}
               
             
     </div>
