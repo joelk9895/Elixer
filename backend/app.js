@@ -21,6 +21,22 @@ app.get('/admin', (req, res) => {
     run().catch(console.dir);
 });
 
+app.get('/consult', (req, res) => { 
+    async function run() {
+        try {
+        await client.connect();
+        const database = client.db('elixer');
+        const collection = database.collection('consult');
+        const user = await collection.find({}).toArray();
+        console.log(user);
+        res.send(user);
+        } finally {
+        await client.close();
+        }
+    }
+    run().catch(console.dir);
+});
+
 app.listen(8080 , () => {
   console.log('Server is running on port 8080');
 
