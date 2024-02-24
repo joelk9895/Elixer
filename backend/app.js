@@ -1,68 +1,77 @@
 const express = require('express');
-const app = express();
-const { MongoClient } = require('mongodb');
-const ObjectId = require('mongodb').ObjectId;
-const { run } = require('node:test');
-const uri = "mongodb+srv://joelk9895:qysguc-tuJpat-2woctu@opinio.qkbdnis.mongodb.net/?retryWrites=true&w=majority&appName=opinio";
-const client = new MongoClient(uri);
+const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+const port = 8080;
 
+// MongoDB URI
+const uri = "mongodb+srv://joelk9895:qysguc-tuJpat-2woctu@opinio.qkbdnis.mongodb.net/?retryWrites=true&w=majority&appName=opinio";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Middleware
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get('/admin', (req, res) => {
-    async function run() {
-        try {
+// Connect to MongoDB
+async function connectDB() {
+    try {
         await client.connect();
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+    }
+}
+connectDB();
+
+// Route to fetch data from 'dispatch' collection
+app.get('/admin', async (req, res) => {
+    try {
         const database = client.db('elixer');
         const collection = database.collection('dispatch');
-        const user = await collection.find({}).toArray();
-        console.log(user);
-        res.send(user);
-        } finally {
-        await client.close();
-        }
+        const users = await collection.find({}).toArray();
+        console.log(users);
+        res.send(users);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error");
     }
-    run().catch(console.dir);
 });
 
-app.get('/consult', (req, res) => { 
-    async function run() {
-        try {
-        await client.connect();
+// Route to fetch data from 'consult' collection
+app.get('/consult', async (req, res) => {
+    try {
         const database = client.db('elixer');
         const collection = database.collection('consult');
-        const user = await collection.find({}).toArray();
-        console.log(user);
-        res.send(user);
-        } finally {
-        await client.close();
-        }
+        const users = await collection.find({}).toArray();
+        console.log(users);
+        res.send(users);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error");
     }
-    run().catch(console.dir);
 });
 
-app.post('/details', (req, res) => {
+// Route to fetch data from 'consult' collection based on _id
+app.post('/details', async (req, res) => {
     const data = req.body.id;
-    async function run() {
-        try {   
-        await client.connect();
+    console.log(data);
+    try {
         const database = client.db('elixer');
         const collection = database.collection('consult');
         const query = { _id: new ObjectId(data) };
         const user = await collection.findOne(query);
         console.log(user);
         res.send(user);
-        } finally {
-        await client.close();
-        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error");
     }
-    run().catch(console.dir);
 });
 
-app.listen(8080 , () => {
-  console.log('Server is running on port 8080');
-
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });

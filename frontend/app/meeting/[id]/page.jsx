@@ -1,8 +1,10 @@
 "use client"
+
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, get, onValue } from 'firebase/database';
 import React, { useEffect, useState } from 'react';
 import './page.css';
+import axios from 'axios';
 
 // Firebase configuration (should be moved to a separate file for security)
 const firebaseConfig = {
@@ -15,8 +17,9 @@ const firebaseConfig = {
   appId: "1:478048172929:web:ab4ff0aaa3bd05b662c680"
 };
 
-const Page = () => {
+const Page = ({ params }) => {
   const [floatData, setFloatData] = useState(null);
+  const [userData, setUserData] = useState(null); // Initialize userData as null
 
   // Initialize Firebase app outside the component
   const firebaseApp = initializeApp(firebaseConfig);
@@ -29,19 +32,26 @@ const Page = () => {
       const floatVal = snapshot.val();
       setFloatData(floatVal);
       console.log('Fetched float:', floatData);
+      axios.post('http://localhost:8080/details', {
+        id: params.id
+      }).then((response) => {
+        console.log(response);
+        setUserData(response.data);
+      });
     }, (error) => {
       console.error('Error fetching float:', error);
     });
 
     // Clean up the listener when the component unmounts
     return () => unsubscribe();
-  }, [])
+  }, []);
 
-  return (
+  // Render component contents only when userData is not null
+  return userData !== null ? (
     <>
       <div className="top">
-        <h2 className='symptom'>Symptom</h2>
-        <p className="symptomtext">djfoidsjfiosdjfoisdjfosjd</p>
+        <h2 className='symptom'>{userData.department}</h2>
+        <p className="symptomtext">{userData.issue}</p>
       </div>
       <div className="meetinpage">
         <div className="doctormeeting">
@@ -65,7 +75,7 @@ const Page = () => {
         </div>
       </div>
     </>
-  );
+  ) : null; // Render null if userData is null
 };
 
 export default Page;
