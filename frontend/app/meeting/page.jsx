@@ -1,6 +1,6 @@
 "use client"
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, get } from 'firebase/database';
+import { getDatabase, ref, get, onValue } from 'firebase/database';
 import React, { useEffect, useState } from 'react';
 import './page.css';
 
@@ -22,22 +22,20 @@ const Page = () => {
   const firebaseApp = initializeApp(firebaseConfig);
 
   useEffect(() => {
-    const fetchFloatFromFirebase = async () => {
-      const database = getDatabase(firebaseApp);
-      const floatRef = ref(database, 'test/float');
+    const database = getDatabase();
+    const floatRef = ref(database, 'test/float');
 
-      try {
-        const snapshot = await get(floatRef);
-        const floatVal = snapshot.val();
-        setFloatData(floatVal);
-        console.log('Fetched float:', floatData);
-      } catch (error) {
-        console.error('Error fetching float:', error);
-      }
-    };
+    const unsubscribe = onValue(floatRef, (snapshot) => {
+      const floatVal = snapshot.val();
+      setFloatData(floatVal);
+      console.log('Fetched float:', floatData);
+    }, (error) => {
+      console.error('Error fetching float:', error);
+    });
 
-    fetchFloatFromFirebase();
-  }, []);
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, [])
 
   return (
     <>
