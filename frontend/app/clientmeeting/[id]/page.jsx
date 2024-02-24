@@ -51,7 +51,7 @@ const Page = ({ params }) => {
     <>
       <div className="top">
         <h2 className='symptom'>{userData.department}</h2>
-        <p className="symptomtext">{userData.issue}</p>
+        
       </div>
       <div className="meetinpage">
         <div className="doctormeeting">
@@ -63,15 +63,7 @@ const Page = ({ params }) => {
             className="doctorframe"
           ></iframe>
         </div>
-        <div className="rightdatabar">
-          <div className="leftdatabar1">
-          </div>
-          <div className="heartrate sidecar">
-            <h3>Heart Rate</h3>
-            <p>❤️</p>
-            <p>{floatData} BPM</p>
-          </div>
-        </div>
+       
       </div>
     </>
   ) : null; // Render null if userData is null

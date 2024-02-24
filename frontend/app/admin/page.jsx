@@ -30,6 +30,8 @@ const page = () => {
             <div><p className="data">Name</p></div>
             <div><p className="data">Phone no</p></div>
             <div><p className="data">Location</p></div>
+            <div><p className="data">Status</p></div>
+
           </div>
           {dashcards.map((dashcards, index) => (
             <Dashcard
@@ -37,6 +39,8 @@ const page = () => {
               name={dashcards.name}
               phone={dashcards.phoneNumber}
               location={dashcards.location}
+              status="NO"
+
             />
           ))}
         </div>

@@ -7,6 +7,8 @@ const Dashcard = (props) => {
               <div><p className="data">{props.name}</p></div>
               <div><p className="data">{props.phone}</p></div>
               <div><p className="data">{props.location}</p></div>
+              <div><p className="data">{props.status}</p></div>
+
               
             
     </div>
