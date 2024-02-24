@@ -4,6 +4,9 @@ const { MongoClient } = require('mongodb');
 const { run } = require('node:test');
 const uri = "mongodb+srv://joelk9895:qysguc-tuJpat-2woctu@opinio.qkbdnis.mongodb.net/?retryWrites=true&w=majority&appName=opinio";
 const client = new MongoClient(uri);
+const cors = require('cors');
+
+app.use(cors());
 
 app.get('/admin', (req, res) => {
     async function run() {
