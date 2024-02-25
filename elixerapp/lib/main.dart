@@ -42,7 +42,7 @@ class MainApp extends StatelessWidget {
     try {
       final response = await http
           .get(
-            Uri.parse('http://192.168.172.119:8080/admin'),
+            Uri.parse('http://192.168.40.104:8080/admin'),
             // Specify a timeout duration of 30 seconds
           )
           .timeout(const Duration(seconds: 30));
